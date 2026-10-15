@@ -1,0 +1,7 @@
+rust/target/
+build/
+ios/GridCraft.xcodeproj/
+ios/Generated/
+*.ipa
+.DS_Store
+ios/Info.plist

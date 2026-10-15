@@ -1,0 +1,48 @@
+name: iOS build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  rust-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: rust
+      - run: cargo test
+        working-directory: rust
+
+  ios:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: rustup target add aarch64-apple-ios
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: rust
+      - name: Build Rust engine for iOS
+        run: bash scripts/build-rust-ios.sh
+      - name: Generate Xcode project
+        run: |
+          brew install xcodegen
+          cd ios && xcodegen generate
+      - name: Build app (unsigned)
+        run: |
+          xcodebuild -project ios/GridCraft.xcodeproj -scheme GridCraft -configuration Release \
+            -sdk iphoneos -destination 'generic/platform=iOS' -derivedDataPath build/dd \
+            CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" build
+      - name: Package IPA
+        run: |
+          mkdir -p build/ipa/Payload
+          cp -R build/dd/Build/Products/Release-iphoneos/GridCraft.app build/ipa/Payload/
+          cd build/ipa && zip -qry ../../GridCraft.ipa Payload
+      - uses: actions/upload-artifact@v4
+        with:
+          name: GridCraft-ipa
+          path: GridCraft.ipa
+          retention-days: 14
