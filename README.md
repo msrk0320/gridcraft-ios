@@ -32,10 +32,26 @@ copy/paste and hardware-keyboard navigation.
 3. Install `GridCraft.ipa` on your phone with [Sideloadly](https://sideloadly.io) and a free Apple ID.
    Free signing lasts 7 days; re-sideload to refresh.
 
+## Web app
+
+The same engine compiled to WebAssembly, with a touch-friendly web front end in `web/www`.
+It is deployed to GitHub Pages on every push to `main` by `.github/workflows/web.yml`:
+**https://msrk0320.github.io/gridcraft-ios/**. Open it in Safari and use Share → Add to Home Screen
+for a full-screen app that works offline. The open workbook is autosaved in that browser.
+
+Build locally (needs the `wasm32-unknown-unknown` target and `wasm-bindgen-cli` at the version in
+`web/rust/Cargo.lock`), then serve `build/web` with any static server:
+
+```sh
+bash scripts/build-web.sh
+python -m http.server -d build/web
+```
+
 ## Rust tests (any OS)
 
 ```sh
 cd rust && cargo test
+cd web/rust && cargo test
 ```
 
 ## Licence

@@ -1,4 +1,4 @@
-rust/target/
+target/
 build/
 ios/GridCraft.xcodeproj/
 ios/Generated/

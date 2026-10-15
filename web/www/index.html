@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+  <title>GridCraft</title>
+  <meta name="description" content="A spreadsheet that runs on your phone, powered by the open-source GridCraft engine.">
+  <meta name="theme-color" content="#1f7a45">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="GridCraft">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" href="icons/icon-180.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="toolbar">
+    <div class="menu-wrap">
+      <button id="menu-btn" class="icon-btn" aria-label="File menu" aria-haspopup="true" aria-expanded="false">
+        <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+      <div id="menu" class="menu" role="menu" hidden>
+        <button role="menuitem" data-action="new">New workbook</button>
+        <button role="menuitem" data-action="open">Open file…</button>
+        <div class="menu-label">Samples</div>
+        <button role="menuitem" data-action="sample" data-sample="sales">Quarterly sales</button>
+        <button role="menuitem" data-action="sample" data-sample="budget">Household budget</button>
+        <button role="menuitem" data-action="sample" data-sample="grades">Gradebook</button>
+        <div class="menu-sep"></div>
+        <button role="menuitem" data-action="export" data-format="xlsx">Download .xlsx</button>
+        <button role="menuitem" data-action="export" data-format="csv">Download .csv</button>
+      </div>
+    </div>
+    <h1 id="title">GridCraft</h1>
+    <button id="clear-btn" class="icon-btn" aria-label="Clear cell">
+      <svg viewBox="0 0 24 24"><path d="M16 4l4 4-9 9H7v-4zM4 20h16"/></svg>
+    </button>
+    <button id="undo-btn" class="icon-btn" aria-label="Undo">
+      <svg viewBox="0 0 24 24"><path d="M9 7L4 12l5 5M4 12h11a5 5 0 010 10h-3"/></svg>
+    </button>
+    <button id="redo-btn" class="icon-btn" aria-label="Redo">
+      <svg viewBox="0 0 24 24"><path d="M15 7l5 5-5 5M20 12H9a5 5 0 000 10h3"/></svg>
+    </button>
+  </header>
+
+  <div class="formula-bar">
+    <span id="name-box" class="name-box">A1</span>
+    <span class="fx">fx</span>
+    <input id="formula" type="text" placeholder="Value or =formula" autocomplete="off" autocorrect="off"
+           autocapitalize="off" spellcheck="false" enterkeyhint="next" aria-label="Cell contents">
+    <button id="cancel-btn" class="icon-btn small" aria-label="Cancel edit" hidden>
+      <svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+    <button id="commit-btn" class="icon-btn small accent" aria-label="Enter" hidden>
+      <svg viewBox="0 0 24 24"><path d="M5 12l5 5 9-10"/></svg>
+    </button>
+  </div>
+
+  <main class="grid-wrap">
+    <canvas id="canvas"></canvas>
+    <div id="scroller" class="scroller"><div id="spacer"></div></div>
+    <div id="loading" class="loading">Loading engine…</div>
+  </main>
+
+  <nav id="tabs" class="tabs" aria-label="Sheets"></nav>
+
+  <input id="file-input" type="file" accept=".xlsx,.xlsm,.xls,.xlsb,.ods,.csv,.tsv,.txt" hidden>
+  <div id="toast" class="toast" role="status" hidden></div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
